@@ -20,23 +20,25 @@ DevOps/SRE 도구들을 **튜토리얼 사용법** 이 아니라 **작동 원리
 
 ---
 
-## 📚 폴더 구성 (계획)
+## 📚 폴더 구성
 
-| 폴더 | 주제 | 상태 |
+| 폴더 | 주제 | 파일 |
 |---|---|:---:|
-| [`network-basics/`](network-basics/) | IP·CIDR·라우팅·NAT·LB·VPC·K8s 네트워킹 | ✅ |
-| [`linux-basics/`](linux-basics/) | systemd·프로세스·시그널·FS·권한·cgroup·namespace | ⏳ |
-| [`docker-basics/`](docker-basics/) | 이미지·레이어·격리·네트워크·볼륨·빌드·보안 | 🟡 (작성 중) |
-| [`kubernetes-basics/`](kubernetes-basics/) | Control plane·kubelet·etcd·workload·스케줄링·CRD | ⏳ |
-| [`helm-basics/`](helm-basics/) | chart·template·release·hooks·values 설계 | ⏳ |
-| [`ansible-basics/`](ansible-basics/) | playbook·inventory·idempotency·role·변수 우선순위 | ⏳ |
-| [`observability-basics/`](observability-basics/) | 3 pillars·Prometheus·PromQL·Alertmanager·SLO·error budget | ⏳ |
-| [`cicd-gitops-basics/`](cicd-gitops-basics/) | CI vs CD·GitHub Actions·ArgoCD·GitOps 원칙 | ⏳ |
-| [`terraform-basics/`](terraform-basics/) | provider·state·module·lifecycle·변경 안전 패턴 | ⏳ |
-| [`k8s-security-basics/`](k8s-security-basics/) | NetworkPolicy·PSS·RBAC·이미지 스캔·supply chain 입문 | ⏳ |
-| [`aws-basics/`](aws-basics/) | VPC·IAM·IRSA·EKS·RDS·S3·KMS | ⏳ |
+| [`network-basics/`](network-basics/) | IP·CIDR·라우팅·NAT·LB·VPC·K8s 네트워킹 | 7 |
+| [`linux-basics/`](linux-basics/) | systemd·프로세스·시그널·FS·권한·cgroup·namespace·troubleshooting | 6 |
+| [`docker-basics/`](docker-basics/) | 이미지·레이어·격리·네트워크·볼륨·빌드·보안 | 7 |
+| [`kubernetes-basics/`](kubernetes-basics/) | Control plane·kubelet·etcd·workload·스케줄링·CRD·RBAC | 8 |
+| [`helm-basics/`](helm-basics/) | chart·template·release·hooks·values 설계·OCI registry | 6 |
+| [`ansible-basics/`](ansible-basics/) | playbook·inventory·idempotency·role·collection·AWX | 6 |
+| [`observability-basics/`](observability-basics/) | 3 pillars·Prometheus·PromQL·Alertmanager·SLO·error budget·OpenTelemetry | 7 |
+| [`cicd-gitops-basics/`](cicd-gitops-basics/) | CI vs CD·GitHub Actions·ArgoCD·deployment strategies·supply chain | 6 |
+| [`terraform-basics/`](terraform-basics/) | provider·state·module·workflow·Terragrunt·Atlantis | 6 |
+| [`k8s-security-basics/`](k8s-security-basics/) | PSS·NetworkPolicy·IRSA·supply chain·secret 관리 | 6 |
+| [`aws-basics/`](aws-basics/) | IAM·VPC·EKS·S3·RDS·KMS·FinOps | 7 |
 
-→ 각 폴더 README는 *큰 그림 + 자주 헷갈리는 것 + 토픽 인덱스*. 그 다음 토픽 파일들이 *깊이*.
+**총 11 폴더 / 72 파일.**
+
+각 폴더 README는 *큰 그림 + 자주 헷갈리는 것 + 토픽 인덱스*. 그 다음 토픽 파일들이 *깊이*.
 
 ---
 
@@ -46,14 +48,17 @@ DevOps/SRE 도구들을 **튜토리얼 사용법** 이 아니라 **작동 원리
 
 | 같은 원리 | 등장 위치 |
 |---|---|
-| **Linux namespace** | docker-basics/02 (격리 구현) → kubernetes-basics/01 (Pod = namespace 공유) → k8s-security-basics (PSS는 어떤 namespace를 어떻게 막는가) |
-| **Network namespace + veth + bridge** | network-basics/06 (CNI 입문) → docker-basics/03 (docker0 bridge) → kubernetes-basics (Pod 네트워킹) |
-| **iptables / DNAT** | network-basics/02·03 → docker-basics/03 (`-p` publish) → kubernetes-basics (kube-proxy iptables 모드) |
-| **선언적 상태 reconciliation** | kubernetes-basics (controller 패턴) → cicd-gitops-basics (ArgoCD sync loop) → terraform-basics (plan-apply) |
-| **OCI 표준** | docker-basics/01 (image spec) → kubernetes-basics (containerd·CRI-O가 OCI 런타임) |
-| **RBAC** | k8s-security-basics → aws-basics (IAM 정책 비교) |
+| **Linux namespace** | docker-basics/02 (격리 구현) → kubernetes-basics/01 (Pod = namespace 공유) → k8s-security-basics/01 (PSS) |
+| **Network namespace + veth + bridge** | network-basics/06 (CNI 입문) → docker-basics/03 (docker0 bridge) → kubernetes-basics/03 (Pod 네트워킹) |
+| **iptables / DNAT** | network-basics/02·03 → docker-basics/03 (`-p` publish) → kubernetes-basics/03 (kube-proxy iptables 모드) |
+| **선언적 상태 reconciliation** | kubernetes-basics/06 (controller 패턴) → cicd-gitops-basics/03 (ArgoCD sync loop) → terraform-basics (plan-apply) |
+| **OCI 표준** | docker-basics/01 (image spec) → kubernetes-basics (containerd·CRI-O가 OCI 런타임) → helm-basics/05 (OCI chart) |
+| **OIDC trust** | cicd-gitops-basics/02 (GitHub Actions ↔ AWS) → kubernetes-basics/07 (IRSA) → k8s-security-basics/03 (Workload Identity) → aws-basics/01 |
+| **RBAC** | kubernetes-basics/07 → k8s-security-basics/03 → aws-basics/01 (IAM 비교) |
+| **공급망 보안 (cosign·SBOM·admission)** | docker-basics/06 → cicd-gitops-basics/05 → k8s-security-basics/04 |
+| **External Secrets Operator** | kubernetes-basics/04 → k8s-security-basics/05 → aws-basics/05 |
 
-→ 토픽 파일 안에 *"이건 X와 같은 원리, 거기선 Y라고 부른다"* 같은 노트를 적극 박는다.
+→ 토픽 파일 안에 *"이건 X와 같은 원리, 거기선 Y라고 부른다"* 같은 노트가 적극 박혀 있음.
 
 ---
 
@@ -73,6 +78,24 @@ DevOps/SRE 도구들을 **튜토리얼 사용법** 이 아니라 **작동 원리
 - **그림 위주가 아닌 *흐름 위주*** (ASCII flow OK, 필요 시 Mermaid)
 - **숫자·예시 구체적으로** (예: "큰 이미지" 가 아니라 "node:20-alpine 약 130MB")
 - **각 토픽 끝에 3줄 요약** — *지하철에서 면접 직전 훑기용*
+
+---
+
+## 🎤 면접 빈출 — 폴더별 핵심 질문
+
+| 폴더 | 핵심 질문 |
+|---|---|
+| network-basics | NAT 동작, 라우팅 테이블 해석, Load Balancer 종류 |
+| linux-basics | 좀비/OOM/Load Average 의미, systemd dependency, 장애 디버깅 12단계 |
+| docker-basics | Docker는 어떻게 격리? K8s가 docker 빼는 의미? layer caching? |
+| kubernetes-basics | kubectl apply 8단계, Controller pattern, IRSA |
+| helm-basics | chart 구조, values 우선순위, checksum/config 패턴 |
+| ansible-basics | 멱등성 보장, 변수 22단계, Ansible vs Terraform |
+| observability-basics | RED vs USE, multi-burn-rate alert, Distributed tracing |
+| cicd-gitops-basics | GitOps push vs pull, OIDC trust boundary, Progressive Delivery |
+| terraform-basics | state 필요한 이유, plan vs apply, Drift detection |
+| k8s-security-basics | PSS profile, NetworkPolicy default-deny, Cosign keyless 원리 |
+| aws-basics | User vs Role, IRSA 동작, KMS envelope encryption, Spot 안전 사용 |
 
 ---
 
