@@ -22,6 +22,13 @@ DevOps/SRE 도구들을 **튜토리얼 사용법** 이 아니라 **작동 원리
 
 ## 📚 폴더 구성
 
+이 repo는 *두 축* 으로 구성된다:
+
+- **수직 축 (도구별 챕터)** — 도구 하나의 작동 원리를 깊게.
+- **수평 축 (foundations)** — 여러 챕터를 가로지르는 *공통 토대*. Spring AOP의 *aspect* 와 같은 위치.
+
+### 수직 — 도구별 챕터 (11개)
+
 | 폴더 | 주제 | 파일 |
 |---|---|:---:|
 | [`network-basics/`](network-basics/) | IP·CIDR·라우팅·NAT·LB·VPC·K8s 네트워킹 | 7 |
@@ -36,7 +43,22 @@ DevOps/SRE 도구들을 **튜토리얼 사용법** 이 아니라 **작동 원리
 | [`k8s-security-basics/`](k8s-security-basics/) | PSS·NetworkPolicy·IRSA·supply chain·secret 관리 | 6 |
 | [`aws-basics/`](aws-basics/) | IAM·VPC·EKS·S3·RDS·KMS·FinOps | 7 |
 
-**총 11 폴더 / 72 파일.**
+### 수평 — [`foundations/`](foundations/) (횡단 토대, 6개)
+
+11개 챕터가 *공유하는* 원리들. 챕터를 가로질러 등장하는 패턴을 한 번 깊이 정리한 문서.
+
+| 문서 | 무엇 |
+|---|---|
+| [declarative-and-reconciliation](foundations/declarative-and-reconciliation.md) | k8s·terraform·ansible·argocd가 공유하는 메타 패턴 (이 폴더의 허브) |
+| [shell-scripting](foundations/shell-scripting.md) | bash/POSIX 원리 — entrypoint·hook·playbook의 공용어 |
+| [tls-and-pki](foundations/tls-and-pki.md) | 전송 보안 — 모든 컴포넌트 통신의 토대 |
+| [identity-and-auth](foundations/identity-and-auth.md) | 신원 보안 — uid부터 IRSA·OIDC federation까지 |
+| [yaml-and-templating](foundations/yaml-and-templating.md) | 설정의 공용 언어 + Go template / Jinja2 |
+| [go-for-infra](foundations/go-for-infra.md) | 인프라 도구 *읽을 수 있는* 수준의 Go 이해 |
+
+→ [`foundations/README.md`](foundations/README.md) 에 *챕터 ↔ foundation 매트릭스* 와 폴더 비대화 방지 가드레일 명시.
+
+**총 11 챕터 + 6 foundations / 78 파일.**
 
 각 폴더 README는 *큰 그림 + 자주 헷갈리는 것 + 토픽 인덱스*. 그 다음 토픽 파일들이 *깊이*.
 
@@ -59,6 +81,7 @@ DevOps/SRE 도구들을 **튜토리얼 사용법** 이 아니라 **작동 원리
 | **External Secrets Operator** | kubernetes-basics/04 → k8s-security-basics/05 → aws-basics/05 |
 
 → 토픽 파일 안에 *"이건 X와 같은 원리, 거기선 Y라고 부른다"* 같은 노트가 적극 박혀 있음.
+→ 위 표의 *반복 등장하는 원리*들은 [`foundations/`](foundations/) 에서 한 번 깊이 정리됨. 챕터에서 `[[foundations/X]]` 로 역링크.
 
 ---
 
